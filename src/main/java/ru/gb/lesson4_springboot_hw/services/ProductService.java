@@ -28,4 +28,8 @@ public class ProductService {
         Product product = productRepository.getProductById(id);
         product.setCost(product.getCost() + delta);
     }
+
+    public void addNewProduct(String productTitle, Double productCost) {
+        productRepository.addNewProduct(productTitle, productCost);
+    }
 }

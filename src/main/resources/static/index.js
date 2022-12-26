@@ -31,5 +31,18 @@ angular.module('app', []).controller('indexController', function ($scope, $http)
         })
     }
 
+    $scope.addProduct = function (productTitle, productCost) {
+        $http({
+            url: contextPath + '/products/add_new',
+            method: 'GET',
+            params: {
+                productTitle: productTitle,
+                productCost: productCost
+            }
+        }).then(function (response) {
+                $scope.loadProducts();
+        })
+    }
+
     $scope.loadProducts();
 });

@@ -11,7 +11,22 @@
 </head>
 
 <body>
+
     <div class="container" ng-controller="indexController">
+        <h3>Новый продукт:</h3>
+        <div class="row g-3">
+            <div class="col-sm-7">
+                <input ng-model="productTitle" type="text" class="form-control" placeholder="Наименование" aria-label="Наименование">
+            </div>
+            <div class="col-sm-3">
+                <input ng-model="productCost" type="number" class="form-control" placeholder="Стоимость" aria-label="Стоимость">
+            </div>
+            <div class="col-auto">
+                <button type="submit" class="btn btn-primary" ng-click="addProduct(productTitle,productCost)">Submit</button>
+            </div>
+        </div>
+
+
         <h3>Список Продуктов</h3>
        <!-- {{MySimpleData}} пример передачи переменной из js в html -->
         <table class="table table-hover" cellpadding="0" , cellspacing="0">

@@ -33,4 +33,8 @@ public class ProductController {
     public void changeCost(@RequestParam Long productId, @RequestParam Integer delta) {
         productService.changeCost(productId, delta);
     }
+    @GetMapping("/products/add_new")
+    public void addProduct(@RequestParam String productTitle, @RequestParam Double productCost) {
+        productService.addNewProduct(productTitle, productCost);
+    }
 }

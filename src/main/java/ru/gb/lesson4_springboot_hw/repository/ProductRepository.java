@@ -33,5 +33,7 @@ public class ProductRepository {
     }
 
 
-
+    public void addNewProduct(String productTitle, Double productCost) {
+        products.add(new Product(productTitle, productCost));
+    }
 }
