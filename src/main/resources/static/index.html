@@ -11,27 +11,42 @@
 </head>
 
 <body>
+
     <div class="container" ng-controller="indexController">
-        <h3>Список Студентов</h3>
-        {{MySimpleData}}
+        <h3>Новый продукт:</h3>
+        <div class="row g-3">
+            <div class="col-sm-7">
+                <input ng-model="productTitle" type="text" class="form-control" placeholder="Наименование" aria-label="Наименование">
+            </div>
+            <div class="col-sm-3">
+                <input ng-model="productCost" type="number" class="form-control" placeholder="Стоимость" aria-label="Стоимость">
+            </div>
+            <div class="col-auto">
+                <button type="submit" class="btn btn-primary" ng-click="addProduct(productTitle,productCost)">Submit</button>
+            </div>
+        </div>
+
+
+        <h3>Список Продуктов</h3>
+       <!-- {{MySimpleData}} пример передачи переменной из js в html -->
         <table class="table table-hover" cellpadding="0" , cellspacing="0">
             <tr>
                 <td>ID</td>
-                <td>Имя студента</td>
-                <td>Балл</td>
+                <td>Название</td>
+                <td>Стоимость</td>
                 <td>Действие</td>
             </tr>
             <tbody>
-            <tr ng-repeat="s in StudentsList">
-                <td>{{s.id}}</td>
-                <td>{{s.name}}</td>
+            <tr ng-repeat="p in ProductsList">
+                <td>{{p.id}}</td>
+                <td>{{p.title}}</td>
                 <td>
-                    <button class="btn btn-primary" ng-click="changeScore(s.id, -5)">-</button>
-                    {{s.score}}
-                    <button class="btn btn-primary" ng-click="changeScore(s.id, +5)">+</button>
+                    <button class="btn btn-primary" ng-click="changeCost(p.id, -1)">-</button>
+                    {{p.cost}}
+                    <button class="btn btn-primary" ng-click="changeCost(p.id, +1)">+</button>
                 </td>
                 <td>
-                    <button class="btn btn-danger" ng-click="deleteStudent(s.id)">Исключить</button>
+                    <button class="btn btn-danger" ng-click="deleteProduct(p.id)">Удалить</button>
                     <!-- повесили листенер на кнопку "Исключить". class="btn btn-danger" применяет цвет кнопки-->
                 </td>
             </tr>

@@ -1,38 +1,48 @@
 angular.module('app', []).controller('indexController', function ($scope, $http) {
-    const contextPath = 'http://localhost:8080/store';
+    const contextPath = 'http://localhost:8080/app';
 
-    $scope.MySimpleData='Data';
-
-    $scope.loadStudents = function () {
-        $http.get(contextPath + '/students')
+    $scope.loadProducts = function () {
+        $http.get(contextPath + '/all')
             .then(function (response) {
                 console.log(response);
-            $scope.StudentsList = response.data;
+            $scope.ProductsList = response.data;
         });
     };
-    /* Чтобы функцию созданну в js можно было использовать в html, её нужно положить в scope*/
-    $scope.deleteStudent = function (studentId) {
-       /* alert(studentId); /* выведем в алерте переданный studentId */
-        $http.get(contextPath + '/students/delete/' + studentId)
+
+    $scope.deleteProduct = function (productId) {
+        $http.get(contextPath + '/products/delete/' + productId)
             .then(function (response) {
                 alert('Deleted');
-                $scope.loadStudents();  /* перегружаем страницу со списком студентов */
+                $scope.loadProducts();  /* перегружаем страницу со списком студентов */
             });
     }
 
-    $scope.changeScore = function (studentId, delta) {
+    $scope.changeCost = function (productId, delta) {
         /*Форма для создания шаблона get запроса с @RequestParam*/
         $http({
-            url: contextPath + '/students/change_score',
+            url: contextPath + '/products/change_score',
             method: 'GET',
             params: {
-                studentId: studentId,
+                productId: productId,
                 delta: delta
             }
         }).then(function (response) {
-            $scope.loadStudents();
+            $scope.loadProducts();
         })
     }
 
-    $scope.loadStudents();
+    $scope.addProduct = function (productTitle, productCost) {
+        $http({
+            url: contextPath + '/products/add_new',
+            method: 'GET',
+            params: {
+                productTitle: productTitle,
+                productCost: productCost
+            }
+        }).then(function (response) {
+                $scope.loadProducts();
+        })
+    }
+
+    $scope.loadProducts();
 });
