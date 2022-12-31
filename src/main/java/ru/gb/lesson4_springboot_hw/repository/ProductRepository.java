@@ -1,39 +1,88 @@
 package ru.gb.lesson4_springboot_hw.repository;
 
-import jakarta.annotation.PostConstruct;
+import org.hibernate.Session;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ru.gb.lesson4_springboot_hw.data.Product;
+import ru.gb.lesson4_springboot_hw.repository.dbservice.DBUtils;
+import ru.gb.lesson4_springboot_hw.repository.dbservice.ProductDao;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class ProductRepository {
-    private List<Product> products;
+public class ProductRepository implements ProductDao {
 
-    @PostConstruct
-    public void init() {
-        products = new ArrayList<>(List.of(
-                new Product("Grain",78.0 ),
-                new Product("Milk", 98.0),
-                new Product("Apple", 124.55)
-        ));
+    private DBUtils db;
+
+    @Autowired
+    public void setDb(DBUtils db) {
+        this.db = db;
     }
 
+
+    @Override
     public Product getProductById(Long id) {
-        return products.stream().filter(s -> s.getId().equals(id)).findFirst().get();
+        System.out.println("Repository: id - " + id);
+        try(Session session = db.getSession()) {
+            session.beginTransaction();
+//            Product product = (Product) session.createQuery("FROM Product where id = :id")
+//                            .setParameter("id", id).getSingleResult();
+            Product product = session.find(Product.class, id);
+            session.getTransaction().commit();
+            System.out.println(product);
+            return product;
+        }
     }
 
+    @Override
     public List<Product> getAllProducts() {
-        return products;
+        try(Session session = db.getSession()) {
+            session.beginTransaction();
+            List<Product> products = session.createQuery("select prod from Product prod")
+                    .getResultList();
+            session.getTransaction().commit();
+            return products;
+        }
     }
 
+    @Override
     public void deleteProduct(Long id) {
-        products.removeIf(s -> s.getId().equals(id));
+        try(Session session = db.getSession()) {
+            session.beginTransaction();
+            session.createQuery("delete Product prod where prod.id = :id")
+                    .setParameter("id", id)
+                    .executeUpdate();
+            session.getTransaction().commit();
+        }
     }
 
-
-    public void addNewProduct(String productTitle, Double productCost) {
-        products.add(new Product(productTitle, productCost));
+    @Override
+    public void addNewProduct(Product product) {
+        try(Session session = db.getSession()) {
+            session.beginTransaction();
+            session.saveOrUpdate(product);
+            session.getTransaction().commit();
+        }
     }
+
+    @Override
+    public void saveOrUpdate(Product product) {
+        try(Session session = db.getSession()) {
+            session.beginTransaction();
+            session.saveOrUpdate(product);
+            session.getTransaction().commit();
+        }
+    }
+
+    public void updateCostById(Long id, Double cost) {
+        try(Session session = db.getSession()) {
+            session.beginTransaction();
+            session.createQuery("update Product prod set prod.cost = :cost where prod.id = :id")
+                    .setParameter("id", id)
+                    .setParameter("cost", cost)
+                    .executeUpdate();
+            session.getTransaction().commit();
+        }
+    }
+
 }
