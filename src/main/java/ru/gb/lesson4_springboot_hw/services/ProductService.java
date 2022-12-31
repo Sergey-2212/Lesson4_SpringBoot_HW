@@ -12,8 +12,8 @@ public class ProductService {
 
     private ProductRepository productRepository;
     @Autowired
-    public void setProductRepository(ProductRepository productRepository) {
-        this.productRepository = productRepository;
+    public void setRepository(ProductRepository repository) {
+        this.productRepository = repository;
     }
 
     public List<Product> getAllProducts() {
@@ -25,11 +25,12 @@ public class ProductService {
     }
 
     public void changeCost(Long id, Integer delta) {
+        System.out.println("ProdServ: Id - " + id + " delta - " + delta);
         Product product = productRepository.getProductById(id);
-        product.setCost(product.getCost() + delta);
+        productRepository.updateCostById(id, product.getCost() + delta); //протестировать
     }
 
     public void addNewProduct(String productTitle, Double productCost) {
-        productRepository.addNewProduct(productTitle, productCost);
+        productRepository.addNewProduct(new Product(productTitle, productCost));
     }
 }
