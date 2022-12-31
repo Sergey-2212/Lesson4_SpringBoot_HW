@@ -32,6 +32,7 @@ public class ProductController {
     //название параметра метода в контроллере должно совпадать с названием этого параметра в GET запросе
     public void changeCost(@RequestParam Long productId, @RequestParam Integer delta) {
         productService.changeCost(productId, delta);
+        System.out.println("Controller: Id - " + productId + " delta - " + delta);
     }
     @GetMapping("/products/add_new")
     public void addProduct(@RequestParam String productTitle, @RequestParam Double productCost) {
