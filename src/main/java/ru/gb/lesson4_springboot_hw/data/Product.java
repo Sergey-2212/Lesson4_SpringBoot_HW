@@ -1,9 +1,7 @@
-package ru.gb.lesson4_springboot_hw.data;
-
-import jakarta.persistence.*;
+package ru.gb.lesson4_springboot_hw.data;;
 import lombok.Data;
+import jakarta.persistence.*;
 
-import java.io.Serializable;
 
 
 @Entity
@@ -12,7 +10,6 @@ import java.io.Serializable;
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
     private Long id;
     @Column(name = "title")
     private String title;
